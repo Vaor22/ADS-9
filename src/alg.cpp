@@ -3,6 +3,7 @@
 #include <fstream>
 #include <locale>
 #include <cstdlib>
+#include <cstdint>
 #include <vector>
 #include "tree.h"
 
@@ -26,8 +27,8 @@ std::vector<std::vector<char>> getAllPerms(PMTree& tree) {
   return out;
 }
 
-static long long factorial(int n) {
-  long long f = 1;
+static int64_t factorial(int n) {
+  int64_t f = 1;
   for (int i = 2; i <= n; ++i) f *= i;
   return f;
 }
@@ -41,7 +42,7 @@ std::vector<char> getPerm1(PMTree& tree, int num) {
 static void navigate(PMTree::Node* node, int num, std::vector<char>& res) {
   if (node->children.empty()) return;
   int k = static_cast<int>(node->children.size());
-  long long sub = factorial(k - 1);
+  int64_t sub = factorial(k - 1);
   int idx = static_cast<int>((num - 1) / sub);
   int rem = static_cast<int>((num - 1) % sub) + 1;
   if (idx < 0 || idx >= k) return;
@@ -54,7 +55,7 @@ std::vector<char> getPerm2(PMTree& tree, int num) {
   std::vector<char> res;
   if (!tree.root || tree.root->children.empty()) return {};
   int k = static_cast<int>(tree.root->children.size());
-  long long total = factorial(k);
+  int64_t total = factorial(k);
   if (num < 1 || num > total) return {};
   navigate(tree.root, num, res);
   return res;
